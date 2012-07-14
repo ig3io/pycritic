@@ -12,33 +12,42 @@ class Category:
     TRAILER = 6
     COMPANY = 7
 
-# Unimplemented
-class Result:
-    def __init__(self):
-        self.things = ""
-
 # Contains info about the query to be made
 class Query:
     # Standard constructor (w/ parameters)
     def __init__(self, category, terms):
         self.category = category
         self.terms = terms
-        self.baseurl = "http://www.metacritic.com/search/"
-        partialurl = {Category.ALL: self.baseurl + "all",
-                  Category.MOVIE: self.baseurl + "movie",
-                  Category.GAME: self.baseurl + "game",
-                  Category.ALBUM: self.baseurl + "album",
-                  Category.TV: self.baseurl + "tv",
-                  Category.PERSON: self.baseurl + "person",
-                  Category.TRAILER: self.baseurl + "trailer",
-                  Category.COMPANY: self.baseurl + "company"}[self.category]
-        self.url = partialurl + "/" + terms + "/results"
+        self.base_url = "http://www.metacritic.com/search/"
+        partial_url = {Category.ALL: self.base_url + "all",
+                  Category.MOVIE: self.base_url + "movie",
+                  Category.GAME: self.base_url + "game",
+                  Category.ALBUM: self.base_url + "album",
+                  Category.TV: self.base_url + "tv",
+                  Category.PERSON: self.base_url + "person",
+                  Category.TRAILER: self.base_url + "trailer",
+                  Category.COMPANY: self.base_url + "company"}[self.category]
+        self.url = partial_url + "/" + terms + "/results"
         
     # Returns the URL of the created query
     def get_url(self):
         return self.url
+
+class Scrapper():
+    def __init__(self, query):
+        self.raw_data = "Nothing yet"
+        self.status_code = 0
+        self.query = query
+    
+    def search(self):
+        req = requests.get(self.query.get_url())
+        self.status_code = req.status_code
+        self.raw_data = req.content
     
 query = Query(Category.GAME, "fallout")
 print query.get_url()
+scrapper = Scrapper(query)
+scrapper.search()
+print scrapper.status_code
    
         
