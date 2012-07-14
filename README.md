@@ -1,4 +1,4 @@
 petascore
 =========
 
-Python powered Metascore data scrapping
+Python powered Metacritic data scrapping

@@ -11,14 +11,31 @@ class Category:
     TRAILER = 6
     COMPANY = 7
 
-class ResultList:
+class Result:
+    def __init__(self):
+        self.things = ""
+
+class Query:
+    def __init__(self):
+        self.category = Category.GAME
+        self.terms = "red+dead+redemption"
+        self.baseurl = "http://www.metacritic.com/search/"
+        self.finalurl = self.baseurl + "/game/" + self.terms + "/results"
+
+    def mount_url(self):
+        partialurl = {Category.ALL: self.baseurl + "all",
+                  Category.MOVIE: self.baseurl + "movie",
+                  Category.GAME: self.baseurl + "game",
+                  Category.ALBUM: self.baseurl + "album",
+                  Category.TV: self.baseurl + "tv",
+                  Category.PERSON: self.baseurl + "person",
+                  Category.TRAILER: self.baseurl + "trailer",
+                  Category.COMPANY: self.baseurl + "company"}[self.category]
+                  
+        self.finalurl = partialurl + "/" + self.terms + "/results"
+        return self.finalurl
     
-
-def check():
-    req = request.get("http://google.com")
-    if (req.status_code == 200):
-        return "OK"
-    else:
-        return "Oops"
-
-print check()
+query = Query()
+print query.mount_url()
+   
+        
