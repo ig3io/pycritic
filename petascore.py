@@ -44,10 +44,10 @@ class Scrapper():
         self.status_code = req.status_code
         self.raw_data = req.content
     
+# Basic development validation
 query = Query(Category.GAME, "fallout")
 print query.get_url()
 scrapper = Scrapper(query)
 scrapper.search()
 print scrapper.status_code
-   
         
