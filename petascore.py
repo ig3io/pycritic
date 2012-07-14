@@ -19,19 +19,11 @@ class Result:
 
 # Contains info about the query to be made
 class Query:
-    def __init__(self):
-        self.category = Category.GAME
-        self.terms = "red+dead+redemption"
-        self.baseurl = "http://www.metacritic.com/search/"
-        self.finalurl = self.baseurl + "/game/" + self.terms + "/results"
-
+    # Standard constructor (w/ parameters)
     def __init__(self, category, terms):
         self.category = category
         self.terms = terms
         self.baseurl = "http://www.metacritic.com/search/"
-        self.finalurl = self.baseurl + "/game/" + self.terms + "/results"
-        
-    def get_url(self):
         partialurl = {Category.ALL: self.baseurl + "all",
                   Category.MOVIE: self.baseurl + "movie",
                   Category.GAME: self.baseurl + "game",
@@ -40,9 +32,11 @@ class Query:
                   Category.PERSON: self.baseurl + "person",
                   Category.TRAILER: self.baseurl + "trailer",
                   Category.COMPANY: self.baseurl + "company"}[self.category]
-                  
-        self.finalurl = partialurl + "/" + self.terms + "/results"
-        return self.finalurl
+        self.url = partialurl + "/" + terms + "/results"
+        
+    # Returns the URL of the created query
+    def get_url(self):
+        return self.url
     
 query = Query(Category.GAME, "fallout")
 print query.get_url()
