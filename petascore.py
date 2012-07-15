@@ -1,5 +1,5 @@
 import requests
-import lxml
+import bs4
 
 # It's "seems" a good idea to use this "enum", for now
 class Category:
@@ -33,27 +33,7 @@ class Query:
     def get_url(self):
         return self.url
 
-# This class represents a generic resource found at Metascore, identified by
-# its URL
-class Resource:
-    def __init__(self, url):
-        self.url = url
-        self.get_data(url)
-        
-    def get_data(self):
-        req = requests.get(self.url)
-        if (req.status_code != 200):
-            # Something went wrong
-            return False
-        raw_data = req.content
-        # Parsing magic goes here!        
-        self.name = "..."
-        self.metascore = 0
-        self.userscore = 0
-        self.description = "..."
-    
-
-# This will be the main scrapping class. Its objective is to allow the
+# This will be the main scraping class. Its objective is to allow the
 # programmer to search directly through the Petascore module
 class Searcher:
     def __init__(self, query):
@@ -75,11 +55,46 @@ class Searcher:
     #     return some_url
     
     # ...
+
+
+# This class represents a generic resource found at Metascore, identified by
+# its URL
+class Resource:
+    def __init__(self):
+        self.url = ""
+        self.name = ""
+        self.extra = ""
+        self.category = Category.ALL
+        self.metascore = 0
+        self.userscore = 0
+        self.description = ""
+
+def get_resource(url):
+    fail = False
+    success = True
+    req = requests.get(url)
+    if (req.status_code != 200):
+        return fail
+    soup = bs4.BeautifulSoup(req.content)
+    titles = soup.select(".product_title")
+    title = titles[0].text
+    info = title.split("\n")
+    resource = Resource()
+    resource.name = info[1].strip()
+    resource.extra = info[2].strip()
+    return success, resource
     
-# Basic development validation
-query = Query(Category.GAME, "fallout")
+# Basic Query/Searcher development validation
+query = Query(Category.GAME, "fallout+3")
 print query.get_url()
-scrapper = Searcher(query)
-scrapper.search()
-print scrapper.status_code
+searcher = Searcher(query)
+searcher.search()
+print searcher.status_code
         
+# Basic Resource/get_resource developtment validation
+success, resource = get_resource("http://www.metacritic.com/game/pc/fallout-3")
+if (success == True):
+    print resource.name
+    print resource.extra
+else:
+    print "Something went wrong"
