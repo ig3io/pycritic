@@ -55,7 +55,7 @@ class Resource:
 
 # This will be the main scrapping class. Its objective is to allow the
 # programmer to search directly through the Petascore module
-class Searcher():
+class Searcher:
     def __init__(self, query):
         self.raw_data = "Nothing yet"
         self.status_code = 0
