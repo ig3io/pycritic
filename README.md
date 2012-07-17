@@ -1,4 +1,4 @@
-Petascore
+Pycritic
 =========
 Python powered, web scraping based, Metacritic API
 
@@ -6,15 +6,17 @@ What is this?
 -------------
 A, for now, simple Python module that works as a Metacritic API. It uses the [BeautifulSoup][bs] and the [requests][requests] library.
 
+Pycritic is under heavy development, but the actual interface should not change in an immediate future.
+
 How to use it
 -------------
 Copy-pasting from [demo.py](petascore/demo.py):
     
     // If you have included petascore.py in your project
-    import petascore
+    import pycritic
 
-    // For now Petascore just works with Metacritic URLs
-    getter = petascore.ResourceGetter()
+    // For now Pycritic just works with Metacritic URLs
+    getter = pycritic.ResourceGetter()
     resource = getter.get("http://www.metacritic.com/game/pc/fallout-new-vegas")
 
     print resource.name
@@ -30,6 +32,8 @@ Copy-pasting from [demo.py](petascore/demo.py):
 
 License
 -------
-Petascore is released under the MIT License. See LICENSE for more details
+Pycritic is released under the MIT License. See LICENSE for more details
 
-**In development**
+[requests]: http://docs.python-requests.org/en/latest/index.html
+[bs]: http://www.crummy.com/software/BeautifulSoup/
+
