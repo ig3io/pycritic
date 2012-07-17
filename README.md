@@ -10,7 +10,7 @@ Pycritic is under heavy development, but the actual interface should not change 
 
 How to use it
 -------------
-Copy-pasting from [demo.py](petascore/demo.py):
+Copy-pasting from [demo.py](pycritic/demo.py):
     
     // If you have included petascore.py in your project
     import pycritic
@@ -32,7 +32,7 @@ Copy-pasting from [demo.py](petascore/demo.py):
 
 License
 -------
-Pycritic is released under the MIT License. See LICENSE for more details
+Pycritic is released under the MIT License. See [LICENSE](pycritic/LICENSE) for more details
 
 [requests]: http://docs.python-requests.org/en/latest/index.html
 [bs]: http://www.crummy.com/software/BeautifulSoup/
