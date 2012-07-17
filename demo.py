@@ -1,7 +1,7 @@
-import petascore
+import pycritic
 
 # Basic developtment validation
-getter = petascore.ResourceGetter()
+getter = pycritic.ResourceGetter()
 resource = getter.get("http://www.metacritic.com/game/pc/fallout-new-vegas")
 print resource.name
 print resource.date
