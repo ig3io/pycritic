@@ -8,5 +8,3 @@ print resource.date
 print resource.metascore
 print resource.userscore
 print resource.description
-# TODO
-print resource.category
