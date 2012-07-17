@@ -33,68 +33,99 @@ class Query:
     def get_url(self):
         return self.url
 
-# This will be the main scraping class. Its objective is to allow the
-# programmer to search directly through the Petascore module
-class Searcher:
-    def __init__(self, query):
-        self.raw_data = "Nothing yet"
-        self.status_code = 0
-        self.query = query
-    
-    def search(self):
-        req = requests.get(self.query.get_url())
-        self.status_code = req.status_code
-        self.raw_data = req.content
-        
-    # def get_results(self):
-    #     ...
-    #     return infor about the results
-    
-    # def get_result_at(self, index);
-    #     ...
-    #     return some_url
-    
-    # ...
-
-
-# This class represents a generic resource found at Metascore, identified by
-# its URL
+# This class represents a generic resource found at Metascores
 class Resource:
-    def __init__(self):
-        self.url = ""
-        self.name = ""
-        self.extra = ""
-        self.category = Category.ALL
-        self.metascore = 0
-        self.userscore = 0
-        self.description = ""
+    def __init__(self, name, date, category, metascore, userscore, description):
+        self.name = name
+        self.date = date
+        self.category = category
+        self.metascore = metascore
+        self.userscore = userscore
+        self.description = description
 
-def get_resource(url):
-    fail = False
-    success = True
-    req = requests.get(url)
-    if (req.status_code != 200):
-        return fail
-    soup = bs4.BeautifulSoup(req.content)
-    titles = soup.select(".product_title")
-    title = titles[0].text
-    info = title.split("\n")
-    resource = Resource()
-    resource.name = info[1].strip()
-    resource.extra = info[2].strip()
-    return success, resource
+
+class Game(Resource):
+    def __init__(self, name, date, category, metascore, userscore, description, platform):
+        super.__init__(name, date, category, metascore, userscore, description)
+        self.platform = platform        
+
+class Response:
+    def __init__(self, status, content):
+        self.status = status
+        self.content = content
     
-# Basic Query/Searcher development validation
-query = Query(Category.GAME, "fallout+3")
-print query.get_url()
-searcher = Searcher(query)
-searcher.search()
-print searcher.status_code
+    def valid(self):
+        return (self.status == 200)
+    
+    
+class Browser:
+    
+    def get(self, url):
+        request = requests.get(url)
+        response  = Response(request.status_code, request.content)
+        return response
+    
         
-# Basic Resource/get_resource developtment validation
-success, resource = get_resource("http://www.metacritic.com/game/pc/fallout-3")
-if (success == True):
-    print resource.name
-    print resource.extra
-else:
-    print "Something went wrong"
+class ResourceGetter:
+    def __init__(self):
+        self.browser = Browser()
+        self.response = ""
+        self.soup = ""
+        
+    def get(self, url):
+        self.response = self.browser.get(url)
+        self.soup = bs4.BeautifulSoup(self.response.content)
+        return self.extract_data()
+    
+    def extract_data(self):
+        name = self.extract_name()
+        date = self.extract_date()
+        category = self.extract_category()
+        metascore = self.extract_metascore()
+        userscore = self.extract_userscore()
+        description = self.extract_description()
+        #resource = Resource(name, date, category, metascore, userscore, description)
+        resource = Resource(name, date, category, metascore, userscore, description)
+        return resource
+    
+    def extract_name(self):
+        titles = self.soup.select(".product_title")
+        title = titles[0].text
+        info = title.split("\n")
+        name = info[1].strip()
+        return name
+    
+    def extract_date(self):
+        dates = self.soup.select(".release_data")
+        date = dates[0].select(".data")[0].text.strip()
+        return date
+    
+    def extract_category(self):
+        # TODO
+        return Category.GAME 
+    
+    def extract_metascore(self):
+        section = self.soup.select(".metascore_wrap")[0]
+        score = section.select(".score_value")[0].text.strip()
+        return int(score)
+    
+    def extract_userscore(self):
+        section = self.soup.select(".userscore_wrap")[0]
+        score = section.select(".score_value")[0].text.strip()
+        return float(score)
+
+    def extract_description(self):
+        section = self.soup.select(".product_summary")[0].select(".data")[0]
+        description = section.text.strip()
+        return description
+        
+# Basic developtment validation
+getter = ResourceGetter()
+resource = getter.get("http://www.metacritic.com/game/pc/fallout-new-vegas")
+print resource.name
+print resource.date
+print resource.metascore
+print resource.userscore
+print resource.description
+# TODO
+print resource.category
