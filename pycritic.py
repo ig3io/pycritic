@@ -33,7 +33,7 @@ class Query:
     def get_url(self):
         return self.url
 
-# This class represents a generic resource found at Metascores
+# This class represents a generic resource found at Metacritic
 class Resource:
     def __init__(self, name, date, category, metascore, userscore, description):
         self.name = name
