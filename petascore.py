@@ -118,14 +118,3 @@ class ResourceGetter:
         section = self.soup.select(".product_summary")[0].select(".data")[0]
         description = section.text.strip()
         return description
-        
-# Basic developtment validation
-getter = ResourceGetter()
-resource = getter.get("http://www.metacritic.com/game/pc/fallout-new-vegas")
-print resource.name
-print resource.date
-print resource.metascore
-print resource.userscore
-print resource.description
-# TODO
-print resource.category
