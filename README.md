@@ -39,5 +39,5 @@ Pycritic is released under the MIT License. See [LICENSE][license] for more deta
 
 [requests]: http://docs.python-requests.org/en/latest/index.html
 [bs]: http://www.crummy.com/software/BeautifulSoup/
-[demo.py]: https://github.com/ignaciocontreras/pycritic/demo.py
-[license]: https://github.com/ignaciocontreras/pycritic/LICENSE
+[demo.py]: https://github.com/ignaciocontreras/pycritic/blob/master/demo.py
+[license]: https://github.com/ignaciocontreras/pycritic/blob/master/LICENSE
