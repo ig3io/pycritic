@@ -1,6 +1,6 @@
 import pycritic
 
-# Basic developtment validation
+
 getter = pycritic.ResourceGetter()
 resource = getter.get("http://www.metacritic.com/game/pc/fallout-new-vegas")
 print resource.name
