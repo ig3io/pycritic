@@ -12,23 +12,23 @@ How to use it
 -------------
 Copy-pasting from [demo.py](demo.py):
     
-    // If you have included petascore.py in your project
+    # If you have included pycritic.py in your project
     import pycritic
 
-    // For now Pycritic just works with Metacritic URLs
+    # For now Pycritic just works with Metacritic URLs
     getter = pycritic.ResourceGetter()
     resource = getter.get("http://www.metacritic.com/game/pc/fallout-new-vegas")
 
     print resource.name
-    >> Fallout New Vegas
+    # >> Fallout New Vegas
     print resource.date
-    >> Oct 19, 2010
+    # >> Oct 19, 2010
     print resource.metascore
-    >> 84
+    # >> 84
     print resource.userscore
-    >> 8.0
+    # >> 8.0
     print resource.description
-    >> The latest game in the post-nuclear RPG series is being developed by many members of the Fallout 1 and 2  team at Obsidian Entertainment using the Fallout 3 engine.
+    # >> The latest game in the post-nuclear RPG series is being developed by many members of the Fallout 1 and 2  team at Obsidian Entertainment using the Fallout 3 engine.
 
 License
 -------
