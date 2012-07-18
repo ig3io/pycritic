@@ -11,7 +11,7 @@ Pycritic is under heavy development and hasn't been tested enough, but the actua
 
 How to use it
 -------------
-Copy-pasting from [demo.py](demo.py):
+Copy-pasting from [demo.py][demo.py]:
 
 ```python
 # If you have included pycritic.py in your project
@@ -35,8 +35,9 @@ print resource.description
 
 License
 -------
-Pycritic is released under the MIT License. See [LICENSE](LICENSE) for more details
+Pycritic is released under the MIT License. See [LICENSE][license] for more details
 
 [requests]: http://docs.python-requests.org/en/latest/index.html
 [bs]: http://www.crummy.com/software/BeautifulSoup/
-
+[demo.py]: https://github.com/ignaciocontreras/pycritic/demo.py
+[license]: https://github.com/ignaciocontreras/pycritic/LICENSE
