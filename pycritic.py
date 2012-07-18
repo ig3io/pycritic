@@ -116,5 +116,11 @@ class ResourceGetter:
 
     def extract_description(self):
         section = self.soup.select(".product_summary")[0].select(".data")[0]
-        description = section.text.strip()
+        collapsed = section.select(".blurb_collapsed")
+        description = ""
+        if (collapsed):  # There's a collapse/expand button
+            expanded = section.select(".blurb_expanded")
+            description = unicode(collapsed[0].text + expanded[0].text).strip()
+        else:    
+            description = unicode(section.text.strip())
         return unicode(description)
