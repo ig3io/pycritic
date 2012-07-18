@@ -11,7 +11,7 @@ Pycritic is under heavy development and hasn't been tested enough, but the actua
 
 How to use it
 -------------
-Copy-pasting from [demo.py][demo.py]:
+Based on [demo.py][demo.py]:
 
 ```python
 # If you have included pycritic.py in your project
