@@ -117,4 +117,4 @@ class ResourceGetter:
     def extract_description(self):
         section = self.soup.select(".product_summary")[0].select(".data")[0]
         description = section.text.strip()
-        return description
+        return unicode(description)
