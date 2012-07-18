@@ -2,11 +2,12 @@ Pycritic
 =========
 Python powered, web scraping based, Metacritic API
 
+
 What is this?
 -------------
 A, for now, simple Python module that works as a Metacritic API. It uses the [BeautifulSoup][bs] and the [Requests][requests] library.
 
-Pycritic is under heavy development, but the actual interface should not change in an immediate future.
+Pycritic is under heavy development and hasn't been tested enough, but the actual interface should not change in an immediate future.
 
 How to use it
 -------------
