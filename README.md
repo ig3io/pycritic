@@ -18,8 +18,8 @@ Based on [demo.py][demo.py]:
 import pycritic
 
 # For now Pycritic just works with Metacritic URLs
-scrapper = pycritic.Scrapper()
-scrapper = scrapper.get("http://www.metacritic.com/game/pc/fallout-new-vegas")
+scraper = pycritic.Scraper()
+scraper = scrapper.get("http://www.metacritic.com/game/pc/fallout-new-vegas")
 
 print resource.name
 # >> Fallout New Vegas

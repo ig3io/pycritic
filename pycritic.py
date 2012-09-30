@@ -65,7 +65,7 @@ class Browser(object):
         return response
     
         
-class Scrapper(object):
+class Scraper(object):
     def __init__(self, ):
         self.browser = Browser()
         self.response = ""

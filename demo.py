@@ -8,9 +8,9 @@ def print_resource_data(resource):
     print "Description: " + resource.description
 
 
-getter = pycritic.ResourceGetter()
-alien = getter.get("http://www.metacritic.com/movie/alien")
+scraper = pycritic.Scraper()
+alien = scraper.get("http://www.metacritic.com/movie/alien")
 print_resource_data(alien)
-aliens = getter.get("http://www.metacritic.com/movie/aliens")
+aliens = scraper.get("http://www.metacritic.com/movie/aliens")
 print_resource_data(aliens)
 
