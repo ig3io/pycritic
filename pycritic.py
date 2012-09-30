@@ -77,43 +77,43 @@ class Scraper(object):
         return self.extract_data()
     
     def extract_data(self):
-        name = self.extract_name()
-        date = self.extract_date()
-        category = self.extract_category()
-        metascore = self.extract_metascore()
-        userscore = self.extract_userscore()
-        description = self.extract_description()
+        name = self._extract_name()
+        date = self._extract_date()
+        category = self._extract_category()
+        metascore = self._extract_metascore()
+        userscore = self._extract_userscore()
+        description = self._extract_description()
         #resource = Resource(name, date, category, metascore, userscore, description)
         resource = Resource(name, date, category, metascore, userscore, description)
         return resource
     
-    def extract_name(self):
+    def _extract_name(self):
         titles = self.soup.select(".product_title")
         title = titles[0].text
         info = title.split("\n")
         name = info[1].strip()
         return name
     
-    def extract_date(self):
+    def _extract_date(self):
         dates = self.soup.select(".release_data")
         date = dates[0].select(".data")[0].text.strip()
         return date
     
-    def extract_category(self):
+    def _extract_category(self):
         # TODO
         return Category.GAME 
     
-    def extract_metascore(self):
+    def _extract_metascore(self):
         section = self.soup.select(".metascore_wrap")[0]
         score = section.select(".score_value")[0].text.strip()
         return int(score)
     
-    def extract_userscore(self):
+    def _extract_userscore(self):
         section = self.soup.select(".userscore_wrap")[0]
         score = section.select(".score_value")[0].text.strip()
         return float(score)
 
-    def extract_description(self):
+    def _extract_description(self):
         section = self.soup.select(".product_summary")[0].select(".data")[0]
         collapsed = section.select(".blurb_collapsed")
         description = ""
