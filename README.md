@@ -7,7 +7,7 @@ What is this?
 -------------
 A, for now, simple Python module that works as a Metacritic API. It uses the [BeautifulSoup][bs] and the [Requests][requests] library.
 
-Pycritic is under heavy development and hasn't been tested enough, but the actual interface should not change in an immediate future.
+Pycritic is under heavy development and hasn't been tested enough.
 
 How to use it
 -------------
@@ -18,8 +18,8 @@ Based on [demo.py][demo.py]:
 import pycritic
 
 # For now Pycritic just works with Metacritic URLs
-getter = pycritic.ResourceGetter()
-resource = getter.get("http://www.metacritic.com/game/pc/fallout-new-vegas")
+scrapper = pycritic.Scrapper()
+scrapper = scrapper.get("http://www.metacritic.com/game/pc/fallout-new-vegas")
 
 print resource.name
 # >> Fallout New Vegas
