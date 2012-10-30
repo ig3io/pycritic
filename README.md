@@ -8,8 +8,8 @@ A simple Python module that works as a Metacritic API. It uses the [BeautifulSou
 
 Pycritic is under development and hasn't been tested enough (just in Python 2.7.3 for now).
 
-Comming Soon (tm)
------------------
+Comming Soon &trade;
+--------------------
 * Support for all categories
 * Search
 
