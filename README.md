@@ -1,6 +1,6 @@
 Pycritic
 =========
-Python powered, web scraping based, Metacritic API
+A Python Metacritic API. Web scraping based.
 
 What is this?
 -------------
