@@ -61,7 +61,9 @@ class Response(object):
 
 class Browser(object):
     def get(self, url):
-        request = requests.get(url)
+        # Modify User Agent as per convenience
+        user_agent = {'User-agent': 'Mozilla/5.0'}
+        request = requests.get(url,headers = user_agent)
         response = Response(request.status_code, request.content)
         return response
 
@@ -88,10 +90,8 @@ class Scraper(object):
         return resource
 
     def _extract_name(self):
-        titles = self.soup.select(".product_title")
-        title = titles[0].text
-        info = title.split("\n")
-        name = info[1].strip()
+        titles = self.soup.find("span", {"itemprop":"name"})
+        name = titles.string.strip()
         return name
 
     def _extract_date(self):
@@ -104,13 +104,12 @@ class Scraper(object):
         return Category.GAME
 
     def _extract_metascore(self):
-        section = self.soup.select(".metascore_wrap")[0]
-        score = section.select(".score_value")[0].text.strip()
-        return int(score)
+        score = self.soup.find("span", {"itemprop":"ratingValue"})
+        return int(score.string)
 
     def _extract_userscore(self):
         section = self.soup.select(".userscore_wrap")[0]
-        score = section.select(".score_value")[0].text.strip()
+        score = section.select(".metascore_w")[0].text.strip()
         return float(score)
 
     def _extract_description(self):
