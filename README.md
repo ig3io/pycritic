@@ -6,7 +6,7 @@ What is this?
 -------------
 A simple Python module that works as a Metacritic API. It uses the [BeautifulSoup][bs] and the [Requests][requests] library.
 
-Pycritic is under development and hasn't been tested enough (just in Python 2.7.3 for now).
+Pycritic is under development and hasn't been tested enough (just in Python 2.7.8 for now).
 
 Comming Soon &trade;
 --------------------
