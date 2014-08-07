@@ -80,7 +80,7 @@ class Scraper(object):
         return self.extract_data()
 
     def extract_data(self):
-        name = self._extract_name()
+        name = self._extract_name()  # If name returns none, then link is invalid
         if name is None:
             return None
         date = self._extract_date()
