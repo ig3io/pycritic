@@ -1,16 +1,19 @@
 import pycritic
 
 def print_resource_data(resource):
-    print "Name: " + resource.name
-    print "Release date: " + resource.date
-    print "Metascore: " + str(resource.metascore)
-    print "Userscore: " + str(resource.userscore)
-    print "Description: " + resource.description
+    if resource is None:
+        print "Link not valid"
+    else:
+        print "Name: " + resource.name
+        print "Release date: " + resource.date
+        print "Metascore: " + str(resource.metascore)
+        print "Userscore: " + str(resource.userscore)
+        print "Description: " + resource.description
 
 
 def main():
     scraper = pycritic.Scraper()
-    alien = scraper.get("http://www.metacritic.com/movie/alien")
+    alien = scraper.get("http://www.metacritic.com/movie/aln")
     print_resource_data(alien)
     aliens = scraper.get("http://www.metacritic.com/movie/aliens")
     print_resource_data(aliens)

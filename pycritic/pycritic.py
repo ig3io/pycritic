@@ -81,6 +81,8 @@ class Scraper(object):
 
     def extract_data(self):
         name = self._extract_name()
+        if name is None:
+            return None
         date = self._extract_date()
         category = self._extract_category()
         metascore = self._extract_metascore()
@@ -91,6 +93,8 @@ class Scraper(object):
 
     def _extract_name(self):
         titles = self.soup.find("span", {"itemprop":"name"})
+        if titles is None:
+            return None
         name = titles.string.strip()
         return name
 
