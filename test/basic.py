@@ -13,7 +13,7 @@ def print_resource_data(resource):
 
 def main():
     scraper = pycritic.Scraper()
-    alien = scraper.get("http://www.metacritic.com/movie/aln")
+    alien = scraper.get("http://www.metacritic.com/movie/alien")
     print_resource_data(alien)
     aliens = scraper.get("http://www.metacritic.com/movie/aliens")
     print_resource_data(aliens)

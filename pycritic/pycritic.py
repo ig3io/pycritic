@@ -108,13 +108,13 @@ class Scraper(object):
         return Category.GAME
 
     def _extract_metascore(self):
+        #TODO add none value when metacritic score not available
         score = self.soup.find("span", {"itemprop":"ratingValue"})
         return int(score.string)
 
     def _extract_userscore(self):
-        section = self.soup.select(".userscore_wrap")[0]
-        score = section.select(".metascore_w")[0].text.strip()
-        return float(score)
+        score=self.soup.find("div",{"class":"metascore_w user large game mixed"})
+        return float(score.string)
 
     def _extract_description(self):
         section = self.soup.select(".product_summary")[0].select(".data")[0]
