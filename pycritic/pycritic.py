@@ -148,7 +148,10 @@ class Scraper(object):
         return score.string
 
     def _extract_description(self):
+        #TODO : extract description crashes script when page has no description present
         section = self.soup.select(".product_summary")[0].select(".data")[0]
+        if section is None:
+            print None
         collapsed = section.select(".blurb_collapsed")
         description = ""
         if (collapsed):  # There's a collapse/expand button

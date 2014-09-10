@@ -5,10 +5,11 @@ def print_resource_data(resource):
         print "Link not valid"
     else:
         print "Name: " + str(resource.name)
+        print "Platform: " + str(resource.platform)
         print "Release date: " + str(resource.date)
         print "Metascore: " + str(resource.metascore)
         print "Userscore: " + str(resource.userscore)
-        print "Description: " + str(resource.description)
+        print "Description: " + resource.description #Dont use str for description Unicode-ASCII issues
 
 def main():
     scraper = pycritic.Scraper()
@@ -20,13 +21,14 @@ def main():
     print_resource_data(fallout)
 
 def search_meta():
-	scraper = pycritic.Scraper()
-	query = pycritic.Query(pycritic.Category.GAME,"Guacamelee! Super Turbo Championship Edition")
-	search_results=query.get() #returns a list of URLs
+    scraper = pycritic.Scraper()
+    query = pycritic.Query(pycritic.Category.GAME,"Guacamelee! Super Turbo Championship Edition")
+    search_results=query.get()  #returns a list of URLs
 
-	for link in search_results:
-		details=scraper.get(link)
-		print_resource_data(details)
+    for link in search_results:
+        details=scraper.get(link)
+        print "URL: " + link
+        print_resource_data(details)
 
 
 if __name__ == "__main__":
