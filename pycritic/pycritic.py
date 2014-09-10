@@ -16,8 +16,12 @@ class Category(object):
 class Query(object):
     # Standard constructor (w/ parameters)
     def __init__(self, category, terms):
+        self.browser = Browser()
+        self.response = ""
+        self.soup = ""
         self.category = category
         self.terms = terms
+        self.search_term=self.build_terms(self.terms)
         self.base_url = "http://www.metacritic.com/search/"
         partial_url = {Category.ALL: self.base_url + "all",
                        Category.MOVIE: self.base_url + "movie",
@@ -27,28 +31,45 @@ class Query(object):
                        Category.PERSON: self.base_url + "person",
                        Category.TRAILER: self.base_url + "trailer",
                        Category.COMPANY: self.base_url + "company"}[self.category]
-        self.url = partial_url + "/" + terms + "/results"
+        self.search_url = partial_url + "/" + self.search_term + "/results"
 
     # Returns the URL of the created query
     def get_url(self):
-        return self.url
+        return self.search_url
+
+    def build_terms(self,term):
+        search_string = ''.join(c for c in term if c.isalnum() or c.isspace())
+        search_string=search_string.replace(" ","%20")
+        return search_string
+
+    def get(self):
+        self.response = self.browser.get(self.search_url)
+        self.soup = bs4.BeautifulSoup(self.response.content)
+        return self.extract_data()
+
+    def extract_data(self):
+        table = self.soup.find("ul", {"class" : "search_results module"})
+        urls=[]
+        for row in table.findAll("div",{"class":"main_stats"}):
+            urls.append(self._extract_url(row))
+        return urls
+        #return resource
+
+    def _extract_url(self,row):
+        url = row.find("h3",{"class":"product_title basic_stat"})
+        return "http://www.metacritic.com"+url.a.get('href')
+
 
 # This class represents a generic resource found at Metacritic
 class Resource(object):
-    def __init__(self, name, date, category, metascore, userscore, description):
+    def __init__(self, name, date, category, metascore, userscore, description,platform):
         self.name = name
         self.date = date
         self.category = category
         self.metascore = metascore
         self.userscore = userscore
         self.description = description
-
-
-class Game(Resource):
-    def __init__(self, name, date, category, metascore, userscore, description, platform):
-        super.__init__(name, date, category, metascore, userscore, description)
         self.platform = platform
-
 
 class Response(object):
     def __init__(self, status, content):
@@ -61,7 +82,9 @@ class Response(object):
 
 class Browser(object):
     def get(self, url):
-        request = requests.get(url)
+        # Modify User Agent as per convenience
+        user_agent = {'User-agent': 'Mozilla/5.0'}
+        request = requests.get(url, headers = user_agent)
         response = Response(request.status_code, request.content)
         return response
 
@@ -84,18 +107,21 @@ class Scraper(object):
         metascore = self._extract_metascore()
         userscore = self._extract_userscore()
         description = self._extract_description()
-        resource = Resource(name, date, category, metascore, userscore, description)
+        platform=self._extract_platform()
+        resource = Resource(name, date, category, metascore, userscore, description,platform)
         return resource
 
     def _extract_name(self):
-        titles = self.soup.select(".product_title")
-        title = titles[0].text
-        info = title.split("\n")
-        name = info[1].strip()
+        titles = self.soup.find("span", {"itemprop":"name"})
+        if titles is None:
+            return None
+        name = titles.string.strip()
         return name
 
     def _extract_date(self):
         dates = self.soup.select(".release_data")
+        if dates is None:
+            return None
         date = dates[0].select(".data")[0].text.strip()
         return date
 
@@ -103,18 +129,29 @@ class Scraper(object):
         # TODO
         return Category.GAME
 
+    def _extract_platform(self):
+        platfrom=self.soup.find("span", {"itemprop":"device"})
+        if platfrom is None:
+            return None
+        return platfrom.string.strip()
+
     def _extract_metascore(self):
-        section = self.soup.select(".metascore_wrap")[0]
-        score = section.select(".score_value")[0].text.strip()
-        return int(score)
+        score = self.soup.find("span", {"itemprop":"ratingValue"})
+        if score is None:
+            return None
+        return score.string
 
     def _extract_userscore(self):
-        section = self.soup.select(".userscore_wrap")[0]
-        score = section.select(".score_value")[0].text.strip()
-        return float(score)
+        score=self.soup.find("div",{"class":"metascore_w user large game mixed"})
+        if score is None:
+            return None
+        return score.string
 
     def _extract_description(self):
+        #TODO : extract description crashes script when page has no description present
         section = self.soup.select(".product_summary")[0].select(".data")[0]
+        if section is None:
+            print None
         collapsed = section.select(".blurb_collapsed")
         description = ""
         if (collapsed):  # There's a collapse/expand button
