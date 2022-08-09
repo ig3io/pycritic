@@ -39,13 +39,13 @@ class Query(object):
 
 # This class represents a generic resource found at Metacritic
 class Resource(object):
-    def __init__(self, name, date, category, metascore): #, userscore, description):
+    def __init__(self, name, date, category, metascore, userscore, description):
         self.name = name
         self.date = date
         self.category = category
         self.metascore = metascore
-        #self.userscore = userscore
-        #self.description = description
+        self.userscore = userscore
+        self.description = description
 
 
 class Game(Resource):
@@ -88,9 +88,9 @@ class Scraper(object):
         date = self._extract_date()
         category = self._extract_category()
         metascore = self._extract_metascore()
-        #userscore = self._extract_userscore()
-        #description = self._extract_description()
-        resource = Resource(name, date, category, metascore)#, userscore, description)
+        userscore = self._extract_userscore()
+        description = self._extract_description()
+        resource = Resource(name, date, category, metascore, userscore, description)
         return resource
 
     def _extract_name(self):
@@ -112,8 +112,7 @@ class Scraper(object):
         return int(score)
 
     def _extract_userscore(self):
-        section = self.soup.select(".userscore_wrap")[0]
-        score = section.select(".score_value")[0].text.strip()
+        score = self.soup.find_all('a', {'class':'metascore_anchor'})[1].text
         return float(score)
 
     def _extract_description(self):
