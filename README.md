@@ -25,15 +25,15 @@ import pycritic
 scraper = pycritic.Scraper()
 resource = scraper.get("http://www.metacritic.com/game/pc/fallout-new-vegas")
 
-print resource.name
+print(resource.name)
 # >> Fallout New Vegas
-print resource.date
+print(resource.date)
 # >> Oct 19, 2010
-print resource.metascore
+print(resource.metascore)
 # >> 84
-print resource.userscore
+print(resource.userscore)
 # >> 8.0
-print resource.description
+print(resource.description)
 # >> The latest game in the post-nuclear RPG series is being developed by many members of the Fallout 1 and 2  team at Obsidian Entertainment using the Fallout 3 engine.
 ```
 
