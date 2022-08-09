@@ -1,7 +1,4 @@
-from asyncore import write
-from builtins import object
 from builtins import str
-from distutils.file_util import write_file
 import requests
 import bs4
 
@@ -49,8 +46,8 @@ class Resource(object):
 
 
 class Game(Resource):
-    def __init__(self, name, date, category, metascore, platform): #, userscore, description, platform):
-        super.__init__(name, date, category, metascore) #, userscore, description)
+    def __init__(self, name, date, category, metascore, userscore, description, platform):
+        super.__init__(name, date, category, metascore, userscore, description)
         self.platform = platform
 
 
@@ -65,9 +62,7 @@ class Response(object):
 
 class Browser(object):
     def get(self, url):
-        s = requests.Session()
-        s.headers['User-Agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.131 Safari/537.36'
-        request = s.get(url)
+        request = requests.get(url)
         response = Response(request.status_code, request.content)
         return response
 
@@ -80,7 +75,7 @@ class Scraper(object):
 
     def get(self, url):
         self.response = self.browser.get(url)
-        self.soup = bs4.BeautifulSoup(self.response.content, 'html.parser')
+        self.soup = bs4.BeautifulSoup(self.response.content)
         return self.extract_data()
 
     def extract_data(self):
@@ -95,7 +90,9 @@ class Scraper(object):
 
     def _extract_name(self):
         titles = self.soup.select(".product_title")
-        name = self.soup.find('a', {'class':'hover_none'}).text
+        title = titles[0].text
+        info = title.split("\n")
+        name = info[1].strip()
         return name
 
     def _extract_date(self):
@@ -108,11 +105,13 @@ class Scraper(object):
         return Category.GAME
 
     def _extract_metascore(self):
-        score = self.soup.find('a', {'class':'metascore_anchor'}).text
+        section = self.soup.select(".metascore_wrap")[0]
+        score = section.select(".score_value")[0].text.strip()
         return int(score)
 
     def _extract_userscore(self):
-        score = self.soup.find_all('a', {'class':'metascore_anchor'})[1].text
+        section = self.soup.select(".userscore_wrap")[0]
+        score = section.select(".score_value")[0].text.strip()
         return float(score)
 
     def _extract_description(self):
@@ -121,7 +120,7 @@ class Scraper(object):
         description = ""
         if (collapsed):  # There's a collapse/expand button
             expanded = section.select(".blurb_expanded")
-            description = str(collapsed[0].text + expanded[0].text).strip()
+            description = unicode(collapsed[0].text + expanded[0].text).strip()
         else:
-            description = str(section.text.strip())
-        return str(description)
+            description = unicode(section.text.strip())
+        return unicode(description)
