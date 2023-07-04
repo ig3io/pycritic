@@ -109,7 +109,7 @@ class Scraper(object):
 
     def _extract_metascore(self):
         score = self.soup.find('a', {'class':'metascore_anchor'}).text
-        return int(score)
+        return float(score)
 
     def _extract_userscore(self):
         score = self.soup.find_all('a', {'class':'metascore_anchor'})[1].text
